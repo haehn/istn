@@ -195,11 +195,12 @@ def process_batch(config, itn, stn, batch_samples):
     warped_source_seg_binary = warped_source_seg > 0.5
 
     dice = mira_metrics.dice_score(warped_source_seg_binary, target_seg_binary, unindexed_classes=1)['1']
-    hausdorff_distance = \
-        mira_metrics.hausdorff_distance(warped_source_seg_binary, target_seg_binary, unindexed_classes=1, spacing=config.config.spacing)[
-            '1']
-    average_surface_distance = \
-        mira_metrics.average_surface_distance(warped_source_seg_binary, target_seg_binary, unindexed_classes=1, spacing=config.config.spacing)['1']
+    # hausdorff_distance = \
+        # mira_metrics.hausdorff_distance(warped_source_seg_binary, target_seg_binary, unindexed_classes=1, spacing=config.config.spacing)[
+            # '1']
+
+    # average_surface_distance = \
+        # mira_metrics.average_surface_distance(warped_source_seg_binary, target_seg_binary, unindexed_classes=1, spacing=config.config.spacing)['1']
     precision = mira_metrics.precision(warped_source_seg_binary, target_seg_binary, unindexed_classes=1)['1']
     recall = mira_metrics.recall(warped_source_seg_binary, target_seg_binary, unindexed_classes=1)['1']
 
@@ -228,8 +229,8 @@ def process_batch(config, itn, stn, batch_samples):
                    'loss_stn_r': loss_stn_r,
                    'loss': loss_train,
                    'metric_dice': dice,
-                   'metric_hd': hausdorff_distance,
-                   'metric_asd': average_surface_distance,
+                   'metric_hd': dice,#hausdorff_distance,
+                   'metric_asd': dice,#average_surface_distance,
                    'metric_precision': precision,
                    'metric_recall': recall}
 
