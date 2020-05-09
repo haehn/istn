@@ -164,6 +164,8 @@ def process_batch(config, itn, stn, batch_samples):
     source, target = batch_samples['source'].to(config.device), batch_samples['target'].to(config.device)
     source_seg, target_seg = batch_samples['source_seg'].to(config.device), batch_samples['target_seg'].to(
         config.device)
+    source_msk, target_msk = batch_samples['source_msk'].to(config.device), batch_samples['target_msk'].to(
+        config.device)
 
     if itn is not None:
         source_prime = itn(source)
@@ -178,7 +180,14 @@ def process_batch(config, itn, stn, batch_samples):
     stn(torch.cat((source_prime, target_prime), dim=1))
     warped_source = stn.warp_image(source)
     warped_source_prime = stn.warp_image(source_prime)
-    warped_source_seg = stn.warp_image(source_seg)
+
+
+    if source_seg:
+        warped_source_seg = stn.warp_image(source_seg)
+    else:
+        print('using mask!!!')
+        warped_source_seg = stn.warp_image(source_msk)
+
 
     # Custom Metrics - thresholding at 0.5 is a bit arbitrarily and only makes sense if structure map is in [0,1]
     target_seg_binary = target_seg > 0.5
