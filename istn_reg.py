@@ -182,7 +182,7 @@ def process_batch(config, itn, stn, batch_samples):
     warped_source_prime = stn.warp_image(source_prime)
 
 
-    if source_seg.ndim > 0:
+    if type(source_seg) == type(None):
         print('using seg!')
         warped_source_seg = stn.warp_image(source_seg)
     else:
