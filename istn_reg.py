@@ -182,7 +182,8 @@ def process_batch(config, itn, stn, batch_samples):
     warped_source_prime = stn.warp_image(source_prime)
 
 
-    if source_seg:
+    if source_seg.ndim > 0:
+        print('using seg!')
         warped_source_seg = stn.warp_image(source_seg)
     else:
         print('using mask!!!')
